@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TravelingSalesman {
 	
-	public static final boolean verbose = false;
+	public static final boolean verbose = true;
 	
 	public static void main(String[] args) {		
 		int n = 20;
