@@ -1,5 +1,6 @@
 package nl.utwente.db.kickinquest.server;
 
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 import org.json.simple.parser.ParseException;
@@ -17,4 +18,16 @@ class RandomQuestion extends Question {
 				lon_min + (new Random().nextDouble() * double_radius), null);
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public LinkedHashMap get_game_json(Zip zip) throws ParseException  {
+		LinkedHashMap res = new LinkedHashMap();
+		
+		res.put("type", json.getStringPath("type"));
+
+		res.put("reward", getReward());
+		
+		return res;
+	}
+	
 }

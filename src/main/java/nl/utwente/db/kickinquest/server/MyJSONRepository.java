@@ -46,6 +46,17 @@ public class MyJSONRepository {
 		}
 	}
 	
+	public Object getObjectPath(String tag1) throws ParseException {
+		Object res = topJSONMap.get(tag1);
+
+		if (res != null)
+			return res;
+		else {
+			System.err.println("#!ERROR: JSON field \""+tag1+"\" missing");
+			throw new ParseException(2);
+		}
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public Object getPath(String tag1, String tag2) {
 		Object res = topJSONMap.get(tag1);

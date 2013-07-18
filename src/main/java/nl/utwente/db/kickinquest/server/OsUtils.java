@@ -98,7 +98,7 @@ public class OsUtils {
 	  public static String[] ls(String dir, boolean fullName) throws IOException {
 		  Vector<String> outv = new Vector<String>();
 		  
-		  String out = runCommand("ls " + dir ,null,outv,null,true);
+		  String out = runCommand("ls " + dir ,null,outv,null,false);
 		  if ( out != null ) {
 			  String res[] = new String[outv.size()];
 			  

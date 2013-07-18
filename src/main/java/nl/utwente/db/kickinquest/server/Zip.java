@@ -1,7 +1,11 @@
 package nl.utwente.db.kickinquest.server;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Vector;
+
+import org.json.simple.parser.ParseException;
 
 public class Zip {
 	
@@ -41,15 +45,36 @@ public class Zip {
 		this.game_json = s;
 	}
 	
-	public void add_image(String name, byte content[]) {
+	public void add_image(String name, byte content[], String x) {
 		images.add( new ZipImage(name, content));
+	}
+	
+	public void handle_image(String basedir, String imageName)
+			throws ParseException {
+		for(int i=0; i<images.size(); i++ )
+			if ( imageName.equals(images.get(i).name) ) {
+				// System.out.println("#!DUPLICATE IMAGE: "+imageName);
+				return;
+			}
+		try {
+			File file = new File(basedir + "/" + imageName);
+			byte[] content = new byte[(int) file.length()];
+
+			FileInputStream is = new FileInputStream(file);
+			is.read(content);
+			// System.out.println("READ: " + imageName + " = " + new String(content));
+			add_image(imageName, content, null);
+		} catch (IOException e) {
+			System.out.println("#!CAUGHT: " + e);
+			throw new ParseException(2);
+		}
 	}
 	
 	public void generate() throws IOException {
 		OsUtils.mkdir(TMPDIR, name);
 		String zipbase = TMPDIR + "/" + name;
 		OsUtils.mkdir(zipbase,"images");
-		String imagesbase = zipbase + "/images";
+		String imagesbase = zipbase;
 		OsUtils.mkdir(zipbase,"json");
 		String jsonbase = zipbase + "/json";
 		OsUtils.createFile(jsonbase, "info.json", info_json.getBytes());

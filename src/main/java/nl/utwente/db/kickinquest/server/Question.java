@@ -3,6 +3,8 @@ package nl.utwente.db.kickinquest.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.util.LinkedHashMap;
 
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
@@ -106,11 +108,18 @@ public abstract class Question {
 		return res;
 	}
 	
-	private int	    order = -1;
-	private Question	next_in_line = null;
+	
+	public abstract LinkedHashMap get_game_json(Zip zip) throws ParseException;
+	
+	protected int	    order = -1;
+	protected Question	next_in_line = null;
 	
 	public void clearOrder() {
 		setOrder(-1,null);
+	}
+	
+	public String order_str() {
+		return "" + (order+1);
 	}
 	
 	boolean hasOrder() {
@@ -126,6 +135,86 @@ public abstract class Question {
 		for(int i=0; i<l.length; i++)
 			l[i].clearOrder();
 	}
+	
+	//
+	// REWARDS
+	//
+	
+	String reward_str[] = {
+			"ca05",
+			"ca12",
+			"ca22",
+			"ca32",
+			"ca40",
+			"ca57",
+			"ca62",
+			"ca78",
+			"co06",
+			"co18",
+			"co29",
+			"co35",
+			"co45",
+			"co52",
+			"co67",
+			"pK0,3",
+			"pI1",
+			"pC2",
+			"pE4",
+			"pN5"
+	};
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected LinkedHashMap getReward() {
+		LinkedHashMap res = new LinkedHashMap();
+		
+		String key = reward_str[order];
+		switch( key.charAt(0) ) {
+		case 'c':
+			res.put("type", "coordinateDigit");
+			switch( key.charAt(1) ) {
+			case 'a':
+				res.put("latOrLon", "latitude");
+				break;
+			case '0':
+				res.put("latOrLon", "longitude");
+				break;
+			default:
+				throw new RuntimeException("BAD REWARD KEY: "+key);
+			}
+			res.put("position", "" + key.charAt(2));
+			res.put("digit", "" + key.charAt(3));
+			break;
+		case 'p':
+			res.put("type", "password");
+			res.put("position", "" + key.substring(2));
+			res.put("letter", "" + key.charAt(1));
+			break;
+		default:
+				throw new RuntimeException("BAD REWARD KEY: "+key);
+		}
+		return res;
+	}
+	
+	// Utils
+	
+	String getMD5(String s) {
+		try {
+			byte[] bytesOfMessage = s.getBytes("UTF-8");
+
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] ba = md.digest(bytesOfMessage);
+
+			StringBuilder str = new StringBuilder();
+		    for(int i = 0; i < ba.length; i++)
+		        str.append(String.format("%x", ba[i]));
+		    return str.toString();
+		} catch (Exception e) {
+			System.out.println("#!getMD5: UNHANDLED Exception: " + e);
+			return null;
+		}
+
+	}
+	
 	
 	public String toString() {
 		return "Question(id="+id+",lat="+lat+",lon="+lon+")";
