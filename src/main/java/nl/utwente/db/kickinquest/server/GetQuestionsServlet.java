@@ -18,11 +18,23 @@ public class GetQuestionsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("quest.zip").getFile());
+        
+        String teamId = request.getParameter("teamId");
+        String language = request.getParameter("language");
+        
+        if (teamId == null || "".equals(teamId)) {
+        	throw new RuntimeException("Invalid request, teamId is required.");
+        }
+        
+        if (!("nl".equals(language) || "en".equals(language))) {
+        	throw new RuntimeException("Invalid request, language is invalid.");
+        }
+        
+        File file = new File(classLoader.getResource(language + "/" + teamId + ".zip").getFile());
 
         response.setContentType("application/pdf");
         response.setContentLength((int)file.length());
-        response.setHeader("Content-Disposition", "attachment;filename=\"" + file.getName() + "\"");
+        response.setHeader("Content-Disposition", "attachment;filename=\"quest.zip\"");
 
         try {
             byte[] arBytes = new byte[(int) file.length()];
