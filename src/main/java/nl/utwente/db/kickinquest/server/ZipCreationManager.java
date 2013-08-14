@@ -24,6 +24,8 @@ public class ZipCreationManager {
 	
 	ZipCreationManager() {
 		try {
+			 // TODO: synchronize dutch/englisg questions
+			 // TODO: per question list/team een lijst met vragen
 			 nl_questions =
 			 Question.readQuestions(NL_QUESTIONS);
 			 en_questions =

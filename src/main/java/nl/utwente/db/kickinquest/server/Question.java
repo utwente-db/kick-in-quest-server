@@ -3,7 +3,6 @@ package nl.utwente.db.kickinquest.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 
 import org.json.simple.JSONValue;
@@ -143,19 +142,19 @@ public abstract class Question {
 	String reward_str[] = {
 			"ca05",
 			"ca12",
-			"ca22",
 			"ca32",
-			"ca40",
-			"ca57",
-			"ca62",
-			"ca78",
+			"ca42",
+			"ca50",
+			"ca67",
+			"ca72",
+			"ca88",
 			"co06",
-			"co18",
-			"co29",
-			"co35",
+			"co28",
+			"co39",
 			"co45",
-			"co52",
-			"co67",
+			"co55",
+			"co62",
+			"co77",
 			"pK0,3",
 			"pI1",
 			"pC2",
@@ -198,23 +197,8 @@ public abstract class Question {
 	// Utils
 	
 	String getMD5(String s) {
-		try {
-			byte[] bytesOfMessage = s.getBytes("UTF-8");
-
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] ba = md.digest(bytesOfMessage);
-
-			StringBuilder str = new StringBuilder();
-		    for(int i = 0; i < ba.length; i++)
-		        str.append(String.format("%x", ba[i]));
-		    return str.toString();
-		} catch (Exception e) {
-			System.out.println("#!getMD5: UNHANDLED Exception: " + e);
-			return null;
-		}
-
+		return org.apache.commons.codec.digest.DigestUtils.md5Hex(s);
 	}
-	
 	
 	public String toString() {
 		return "Question(id="+id+",lat="+lat+",lon="+lon+")";
