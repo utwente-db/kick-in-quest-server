@@ -55,6 +55,22 @@ holder.
     <servlet-name>AnswerQuestions</servlet-name>
     <url-pattern>/AnswerQuestions</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>GetScore</servlet-name>
+    <servlet-class>nl.utwente.db.kickinquest.server.GetScoreServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetScore</servlet-name>
+    <url-pattern>/GetScore</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Results</servlet-name>
+    <servlet-class>nl.utwente.db.kickinquest.server.ResultsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Results</servlet-name>
+    <url-pattern>/Results</url-pattern>
+  </servlet-mapping>
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
