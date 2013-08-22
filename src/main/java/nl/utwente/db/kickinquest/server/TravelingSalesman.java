@@ -7,25 +7,28 @@ public class TravelingSalesman {
 	
 	public static final boolean verbose = true;
 	
-	public static void main(String[] args) {		
-		int n = 20;
-		
-		Question ql[] = Question.randomQuestions(n);
-		Question opt[] = getOptimalPath(ql);
-		//
-		if ( verbose ) {
-			System.out.print("OPTIMAL TOUR[");
-			for (int i = 0; i < opt.length; i++)
-				System.out.print(" " + opt[i].id);
-			System.out.println("]");
-		}
-	}
+//	public static void main(String[] args) {		
+//		int n = 20;
+//		
+//		Question ql[] = Question.randomQuestions(n);
+//		Question opt[] = getOptimalPath(ql);
+//		//
+//		if ( verbose ) {
+//			System.out.print("OPTIMAL TOUR[");
+//			for (int i = 0; i < opt.length; i++)
+//				System.out.print(" " + opt[i].id);
+//			System.out.println("]");
+//		}
+//	}
 	
 	public static Question[] getOptimalPath(Question ql[]) {
 		int i;
 		int matrix[][] = new int[ql.length][ql.length];
 		
 		for(i=0; i<ql.length; i++) {
+			if ( verbose ) {
+				System.out.println("TSP["+i+"] = q"+ql[i].number);
+			}
 			for(int j=0; j<ql.length; j++) {
 				matrix[i][j]=ql[i].distanceMeters(ql[j]);
 				matrix[j][i]=ql[i].distanceMeters(ql[j]);

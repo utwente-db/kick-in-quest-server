@@ -3,7 +3,6 @@ package nl.utwente.db.kickinquest.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 
 import org.json.simple.JSONValue;
@@ -12,6 +11,7 @@ import org.json.simple.parser.ParseException;
 public abstract class Question {
 
 	public String id;
+	public int number;
 	protected double lat; // around  6.89 +/- 0.02
 	protected double lon; // around 52.22 +/- 0.02
 	protected MyJSONRepository json;
@@ -27,6 +27,7 @@ public abstract class Question {
 		this.id   = id;
 		this.lat  = new Double(json.getStringPath("latitude")).doubleValue();
 		this.lon  = new Double(json.getStringPath("longitude")).doubleValue();
+		this.number  = new Integer(json.getStringPath("number")).intValue();
 		this.json = json;
 	}
 	
@@ -66,7 +67,7 @@ public abstract class Question {
 						// System.out.println("#!JSON file read: " + files[i]);
 						Question q = createQuestion(jrep);
 						res[i] = q;
-						System.out.println("#!READ:"+res[i]+"\n"+JSONValue.toJSONString(res[i].json.topMap()));
+						System.out.println("["+res[i].number+"]="+JSONValue.toJSONString(res[i].json.topMap()));
 					} catch (ParseException e) {
 						System.err.println("#!ERROR IN FILE: " + files[i]);
 						System.err.println(new String(arBytes));
@@ -143,24 +144,24 @@ public abstract class Question {
 	String reward_str[] = {
 			"ca05",
 			"ca12",
-			"ca22",
 			"ca32",
-			"ca40",
-			"ca57",
-			"ca62",
-			"ca78",
+			"ca42",
+			"ca50",
+			"ca67",
+			"ca72",
+			"ca88",
 			"co06",
-			"co18",
-			"co29",
-			"co35",
+			"co28",
+			"co39",
 			"co45",
-			"co52",
-			"co67",
-			"pK0,3",
-			"pI1",
+			"co55",
+			"co62",
+			"co77",
 			"pC2",
 			"pE4",
-			"pN5"
+			"pN5",
+			"pI1",
+			"pK0,3"
 	};
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -175,7 +176,7 @@ public abstract class Question {
 			case 'a':
 				res.put("latOrLon", "latitude");
 				break;
-			case '0':
+			case 'o':
 				res.put("latOrLon", "longitude");
 				break;
 			default:
@@ -198,26 +199,11 @@ public abstract class Question {
 	// Utils
 	
 	String getMD5(String s) {
-		try {
-			byte[] bytesOfMessage = s.getBytes("UTF-8");
-
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] ba = md.digest(bytesOfMessage);
-
-			StringBuilder str = new StringBuilder();
-		    for(int i = 0; i < ba.length; i++)
-		        str.append(String.format("%x", ba[i]));
-		    return str.toString();
-		} catch (Exception e) {
-			System.out.println("#!getMD5: UNHANDLED Exception: " + e);
-			return null;
-		}
-
+		return org.apache.commons.codec.digest.DigestUtils.md5Hex(s.toLowerCase());
 	}
 	
-	
 	public String toString() {
-		return "Question(id="+id+",lat="+lat+",lon="+lon+")";
+		return "Question(id="+id+",nr="+number+",lat="+lat+",lon="+lon+")";
 	}
 	
 }

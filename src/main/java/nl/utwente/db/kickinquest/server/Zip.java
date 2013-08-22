@@ -70,7 +70,7 @@ public class Zip {
 		}
 	}
 	
-	public void generate() throws IOException {
+	public void generate(String language) throws IOException {
 		OsUtils.mkdir(TMPDIR, name);
 		String zipbase = TMPDIR + "/" + name;
 		OsUtils.mkdir(zipbase,"images");
@@ -82,7 +82,7 @@ public class Zip {
 		for(int i=0; i<images.size(); i++)
 			OsUtils.createFile(imagesbase, images.get(i).name, images.get(i).content);
 		// zip -r tz.zip tz/images tz/json
-		String zipfile = dir + "/" + name + ".zip";
+		String zipfile = dir + "/" + language + "/" + name + ".zip";
 		OsUtils.removeIfPossible(zipfile);
 		OsUtils.runCommand("zip -r "+zipfile+" images/ json/",null,null,zipbase,false);
 		OsUtils.removeall(TMPDIR, name);
