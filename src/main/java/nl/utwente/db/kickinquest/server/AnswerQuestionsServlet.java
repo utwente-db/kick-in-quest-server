@@ -28,7 +28,8 @@ public class AnswerQuestionsServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     public final static String ROOT_FOLDER = "/data/tomcat/";
-	public static final String PROPERTY_FILE_FOLDER = ROOT_FOLDER;
+	public final static String PROPERTY_FILE_FOLDER = ROOT_FOLDER + "properties/";
+	public final static String QUESTIONS_FOLDER = ROOT_FOLDER + "questions/";
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -40,15 +41,22 @@ public class AnswerQuestionsServlet extends HttpServlet {
         String dataType = request.getParameter("dataType");
         String teamId = request.getParameter("teamId").toUpperCase();
         String deviceId = request.getParameter("deviceId");
+        String language = request.getParameter("language");
+        
+        if (language == null) {
+        	// Best guess
+        	language = "nl";
+        }
+        
         Part data = getFile(request);
         
-    	String fileName = storeData(dataType, teamId, deviceId, data);
+    	String fileName = storeData(dataType, teamId, deviceId, language, data);
     	PrintWriter writer = response.getWriter();
     	
     	writer.write(new File(fileName).getCanonicalPath());
     }
     
-    protected String storeData(String dataType, String teamId, String deviceId, Part data) throws IOException {
+    protected String storeData(String dataType, String teamId, String deviceId, String language, Part data) throws IOException {
 		String folderPath = ROOT_FOLDER + "results/" + teamId + "/" + deviceId;
 		File directory = new File(folderPath);
 		
@@ -60,7 +68,7 @@ public class AnswerQuestionsServlet extends HttpServlet {
 		FileUtils.writeFile(fileName, dataAsString);
 		
 		if ("answers".equals(dataType)) {
-			updateQuestionScores(teamId, deviceId, folderPath, fileName);
+			updateQuestionScores(teamId, deviceId, language, folderPath, fileName);
 		} else if ("gps".equals(dataType)) {
 			updateGPSDataScores(teamId, deviceId, folderPath, fileName);
 		}
@@ -68,9 +76,9 @@ public class AnswerQuestionsServlet extends HttpServlet {
 		return fileName;
 	}
 
-	private void updateQuestionScores(String teamId, String deviceId, String folderPath, String fileName) {
+	private void updateQuestionScores(String teamId, String deviceId, String language, String folderPath, String fileName) {
 		String scoreFileName = folderPath + "/questionscore.txt";
-		int score = calculateQuestionScore(teamId, deviceId, fileName);
+		int score = calculateQuestionScore(teamId, deviceId, language, fileName);
 		
 		FileUtils.writeFile(scoreFileName, "" + score);
 	}
@@ -89,7 +97,7 @@ public class AnswerQuestionsServlet extends HttpServlet {
 		FileUtils.writeFile(scoreFileName, "" + score);
 	}
 
-	private int calculateQuestionScore(String teamId, String deviceId, String fileName) {
+	private int calculateQuestionScore(String teamId, String deviceId, String language, String fileName) {
 		FileReader fileReader;
 		BufferedReader bufferedReader;
 		
@@ -136,7 +144,7 @@ public class AnswerQuestionsServlet extends HttpServlet {
 				JSONObject json;
 				
 				try {
-					json = (JSONObject)parser.parse(FileUtils.getFileAsString(new File(ROOT_FOLDER + "nl/" + questionFileName)));
+					json = (JSONObject)parser.parse(FileUtils.getFileAsString(new File(QUESTIONS_FOLDER + language + "/" + questionFileName)));
 				} catch (ParseException e) {
 					throw new RuntimeException("Unable to read question file: " + questionFileName, e);
 				}

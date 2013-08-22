@@ -52,18 +52,18 @@ public class ResultsServlet extends HttpServlet {
     	List<Entry<String, Integer>> resultList = new ArrayList<Entry<String, Integer>>(resultMap.entrySet());
     	Collections.sort(resultList, new ResultComparator());
     	
+    	int i = 1;
+    	
+    	responseWriter.write("<html><head><title>Kick-In Quest Results</title>" +
+    			"<link type=\"text/css\" href=\"css/stylesheet.css\" rel=\"stylesheet\"/></head>" +
+    			"<body><table id=\"resultsTable\" cellspacing=\"0\"><thead><tr><td>#</td><td>Team ID</td><td>Score</td></tr></thead><tbody>");
+    	
     	for (Entry<String, Integer> resultItem : resultList) {
-    		responseWriter.write(resultItem.getKey() + " " + resultItem.getValue() + "<br/>");
+    		responseWriter.write("<tr><td>" + i++ + ".</td><td>" + resultItem.getKey() + "</td><td>" + resultItem.getValue() + "</td></tr>");
     	}
+    	
+    	responseWriter.write("</tbody></table></body></html>");
     }
-    
-    public static void main(String[] args) {
-    	String getScoreURL = "http://localhost:8080/kick-in-quest-server/GetScore";
-		String scores = "";
-		scores = WebUtils.getContent(getScoreURL);
-
-		System.out.println(scores.split(";").length);
-	}
     
     public class ResultComparator implements Comparator<Entry<String, Integer>> {
 

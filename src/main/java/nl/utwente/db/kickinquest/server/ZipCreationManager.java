@@ -51,7 +51,7 @@ public class ZipCreationManager {
 			if ( false ) {
 				int trails[][] = {
 						{18,16,2,10,17,5,4,1,3,22,13,14,15,21,11,12,24,6,7,9},		// 1
-						{8,23,20,11,19,15,21,14,13,12,24,22,2,1,6,17,4,5,10,18},	// 2	
+						{8,23,20,11,19,15,21,14,13,12,24,22,2,1,6,17,4,5,10,18},	// 2
 						{7,4,17,10,20,21,19,16,23,6,1,2,22,12,24,11,15,14,13,9},	// 3
 						{23,11,14,15,19,16,20,10,6,24,13,12,22,5,4,17,3,2,7,8},		// 4
 						{ 7,17,5,4,1,3,6,10,20,24,12,13,14,11,16,19,21,15,23,8},	// 5
@@ -220,7 +220,7 @@ public class ZipCreationManager {
 			ti.put("DISTANCE_TO_EXPECTED POINT",
 					"De afstand tot het verwachte punt bedraagt");
 			ti.put("GAME_OVER",
-					"Dit was de laatste vraag, het spel is afgelopen. Hartelijk dank voor het meedoen!");
+					"Dit was de laatste vraag, het spel is afgelopen. Hartelijk dank voor het meedoen! Gebruik de co&ouml;rdinaten om naar het juiste punt te gaan, en gebruik daar het wachtwoord en je team code om je resultaten op te vragen.");
 			ti.put("CLICK_TO_CLOSE",
 					"Klik hier om de antwoorden te uploaden en af te sluiten");
 			ti.put("GPS_DISABLED",
@@ -252,7 +252,7 @@ public class ZipCreationManager {
 			ti.put("DISTANCE_TO_EXPECTED POINT",
 					"The distance to the expected point is");
 			ti.put("GAME_OVER",
-					"This was the last question, the game is over. Thanks for playing!");
+					"This was the last question, the game is over. Thanks for playing! Go to point represented by the coordinates you have collected, and use the password to receive your results there.");
 			ti.put("CLICK_TO_CLOSE",
 					"Click here to upload the answers and close the app");
 			ti.put("GPS_DISABLED",
