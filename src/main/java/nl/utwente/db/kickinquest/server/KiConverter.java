@@ -60,6 +60,9 @@ public class KiConverter {
 			System.out.println("@@ QUESTION="+question);
 			l = l.substring(cp+1);
 			
+			if ( lang != 'e') {
+				System.out.println("QQ "+qnumber+" "+adres+" "+question+"\n");
+			}
 			/*
 			 * 
 			 */
@@ -106,12 +109,13 @@ public class KiConverter {
 			json.put("question", question);
 			json.put("correctAnswer", correct);
 			json.put("explanation",explanation);
-			json.put("image", "images/im"+qnumber+".png");
+			json.put("image", "images/q"+qnumber+".jpg");
 			json.put("latitude", coord1);
 			json.put("longitude", coord2);
 			//
 			String str_json = json.toJSONString();
 			System.out.println(str_json);
+			
 			//
 			String outFile = basedir + (lang=='e'?"en/":"nl/") + "q"+qnumber+".json";
 			BufferedWriter out = new BufferedWriter(new FileWriter(outFile));
@@ -123,9 +127,10 @@ public class KiConverter {
 		
 	public static void main(String[] args) {
 		try {
-		convert("/Users/flokstra/kick-in/kinput.txt","/Users/flokstra/kick-in/generated_json/questions/");
+		convert("/Users/flokstra/kick-in/kinput.txt","/Users/flokstra/kick-in/data/questions/");
 		} catch (Exception e) {
 			System.err.println("Error converting file: " + e);
+			e.printStackTrace();
 		}
 	}
 	

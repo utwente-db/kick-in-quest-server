@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 public abstract class Question {
 
 	public String id;
+	public int number;
 	protected double lat; // around  6.89 +/- 0.02
 	protected double lon; // around 52.22 +/- 0.02
 	protected MyJSONRepository json;
@@ -26,6 +27,7 @@ public abstract class Question {
 		this.id   = id;
 		this.lat  = new Double(json.getStringPath("latitude")).doubleValue();
 		this.lon  = new Double(json.getStringPath("longitude")).doubleValue();
+		this.number  = new Integer(json.getStringPath("number")).intValue();
 		this.json = json;
 	}
 	
@@ -65,7 +67,7 @@ public abstract class Question {
 						// System.out.println("#!JSON file read: " + files[i]);
 						Question q = createQuestion(jrep);
 						res[i] = q;
-						System.out.println("#!READ:"+res[i]+"\n"+JSONValue.toJSONString(res[i].json.topMap()));
+						System.out.println("["+res[i].number+"]="+JSONValue.toJSONString(res[i].json.topMap()));
 					} catch (ParseException e) {
 						System.err.println("#!ERROR IN FILE: " + files[i]);
 						System.err.println(new String(arBytes));
@@ -155,11 +157,11 @@ public abstract class Question {
 			"co55",
 			"co62",
 			"co77",
-			"pK0,3",
-			"pI1",
 			"pC2",
 			"pE4",
-			"pN5"
+			"pN5",
+			"pI1",
+			"pK0,3"
 	};
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -174,7 +176,7 @@ public abstract class Question {
 			case 'a':
 				res.put("latOrLon", "latitude");
 				break;
-			case '0':
+			case 'o':
 				res.put("latOrLon", "longitude");
 				break;
 			default:
@@ -197,11 +199,11 @@ public abstract class Question {
 	// Utils
 	
 	String getMD5(String s) {
-		return org.apache.commons.codec.digest.DigestUtils.md5Hex(s);
+		return org.apache.commons.codec.digest.DigestUtils.md5Hex(s.toLowerCase());
 	}
 	
 	public String toString() {
-		return "Question(id="+id+",lat="+lat+",lon="+lon+")";
+		return "Question(id="+id+",nr="+number+",lat="+lat+",lon="+lon+")";
 	}
 	
 }
