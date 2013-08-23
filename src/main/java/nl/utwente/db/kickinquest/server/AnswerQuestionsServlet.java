@@ -151,7 +151,7 @@ public class AnswerQuestionsServlet extends HttpServlet {
 				
 				String correctAnswer = (String)json.get("correctAnswer");
 
-				if (!answer.equals(correctAnswer)) {
+				if (!answer.equalsIgnoreCase(correctAnswer)) {
 					continue;
 				}
 				
